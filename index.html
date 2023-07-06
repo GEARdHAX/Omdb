@@ -295,7 +295,7 @@
 
     function fetchMovieDetails() {
       const title = movieTitleInput.value;
-      fetch(`http://www.omdbapi.com/?t=${title}&apikey=cdf0e59b`)
+      fetch(`https://www.omdbapi.com/?t=${title}&apikey=cdf0e59b`)
         .then((response) => response.json())
         .then((data) => {
           const titleElement = document.querySelector(".title");
