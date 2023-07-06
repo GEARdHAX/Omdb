@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Belanosima&family=Grandiflora+One&family=Kablammo&family=Open+Sans:ital,wght@1,300&family=Poppins:wght@100;300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="shortcut icon" href="/media/movie svg icon.svg" type="image/x-icon">
+  <title>Omdb | Movies Library</title>
+</head>
+<style>
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+
+  * {
+    font-family: 'Belanosima', sans-serif;
+    transition: all 0.3s ease-in-out;
+  }
+
+  body {
+    overflow-x: hidden !important;
+    overflow: hidden;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: black;
+    color: white;
+  }
+
+  video {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none !important;
+  }
+
+  audio {
+    display: none !important;
+  }
+
+  .box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    min-width: 50vh;
+    min-height: 0vh;
+  }
+
+  #movieDetails {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(3.5px);
+    border: 1px solid rgba(0, 0, 0, 1);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 20px;
+    border: 1px solid white;
+  }
+
+  img {
+    object-fit: cover;
+    margin: 50px 0px 50px 0px;
+    height: 421px;
+    width: 300px;
+    border-radius: 20px;
+  }
+
+  .text {
+    text-align: center;
+    /* border: 2px solid white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 50px 0px 50px 0px;
+  }
+
+  .released,
+  .rating,
+  .genre,
+  .language {
+    padding: 10px;
+    border: 1px solid white;
+  }
+
+  .searchInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .props {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input {
+    margin: 30px 20px 20px 0px;
+    width: 100%;
+    padding: 10px;
+    font-size: 30px;
+    border-radius: 20px 0px 20px 0px;
+    border: none !important;
+    outline: none !important;
+  }
+
+  button {
+    margin: 30px 0px 20px 0px;
+    width: 140px;
+    padding: 15px;
+    font-size: 20px;
+    background-color: #068FFF;
+    color: #213363;
+    cursor: pointer;
+    border: none;
+    border-radius: 0px 20px 0px 20px;
+    transition: all 0.1s ease-in-out;
+  }
+
+  button:active {
+    transform: scale(0.9);
+  }
+
+  .spinner {
+    border-radius: 100%;
+    padding: 15px;
+    border-top: 5px solid black;
+    border-right: 5px solid white;
+    border-bottom: 5px solid black;
+    border-left: 5px solid white;
+    width: 50px;
+    height: 50px;
+    animation: spinner-animation 1s linear infinite;
+  }
+
+  .loader {
+    /* Existing styles */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: white;
+    overflow: hidden !important;
+    transition: height 0.5s ease !important;
+  }
+
+
+  .loader.remove {
+    height: 0;
+  }
+
+  @keyframes spinner-animation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 724px) {
+    #movieDetails {
+      flex-direction: column !important;
+      justify-content: center;
+      align-items: center;
+      width: auto;
+      margin: 10px;
+    }
+
+    .plot {
+      margin: 0px 10px 0px 10px;
+    }
+
+    .text {
+      width: auto;
+      margin: auto;
+      text-align: center;
+    }
+
+    img {
+      transform: scale(0.9);
+      margin: 0 !important;
+    }
+
+    input {
+      font-size: 20px;
+      margin: 10px 10px 0px 0px;
+      width: 50%;
+    }
+
+    button {
+      margin: 30px 0px 20px 0px;
+      width: 80px;
+      padding: 15px;
+      font-size: 15px;
+    }
+
+    h1 {
+      font-size: 40px !important;
+    }
+  }
+</style>
+
+<body>
+  <video muted autoplay loop src="/media/snow.mp4"></video>
+  <div data-aos-delay="1700" data-aos-duration="1000" data-aos-easing="ease-in-out" data-aos-delay="50"
+    data-aos="fade-up" class="box">
+    <div class="searchInput">
+      <input type="text" id="movieTitle" placeholder="Enter Movie Title">
+      <button id="fetchButton">Search</button>
+    </div>
+    <div id="movieDetails">
+      <div class="text">
+        <h1 style="font-size: 50px;" class="title">Movie Title</h1>
+        <p style="font-size: 30px;" class="imdbRating"><i class="fa-solid fa-star" style="color: #ffbb00;"> Rating</i>
+        </p>
+        <div class="props">
+          <p class="released">Date</p>
+          <p class="genre">Genre</p>
+          <p class="language">Language</p>
+        </div>
+        <h1>Plot</h1>
+        <p style="text-align: center;" class="plot">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate. Minus neque beatae veritatis
+          ipsum provident iusto, commodi dolore hic labore quod quo et rem dolores unde dignissimos pariatur id.
+        </p>
+        <p class="imdbRating"></p>
+        <h1>Cast</h1>
+        <p style="text-align: center;" class="Actors">Lorem ipsum dolor, sit amet consectetur adipisicing elit. A,
+          reprehenderit!</p>
+      </div>
+      <img class="poster" src="/media/placeholder_img.png">
+    </div>
+  </div>
+  <div class="loader">
+    <div class="spinner">
+    </div>
+    <div class="spinner2">
+    </div>
+  </div>
+  <audio id="backgroundMusic" autoplay loop src="/media/call me  gigi masin.mp3"></audio>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const backgroundMusic = document.getElementById('backgroundMusic');
+      backgroundMusic.play();
+    });
+
+
+    window.addEventListener('load', function () {
+      const spinner = document.querySelector('.loader');
+      setTimeout(function () {
+        spinner.classList.add('remove');
+      }, 1500);
+      setTimeout(function () {
+        document.body.style.overflowY = "auto";
+      }, 1500);
+      setTimeout(function () {
+        spinner.style.display = "none";
+      }, 2000);
+    });
+
+    const movieTitleInput = document.getElementById("movieTitle");
+    const fetchButton = document.getElementById("fetchButton");
+
+    function fetchMovieDetails() {
+      const title = movieTitleInput.value;
+      fetch(`http://www.omdbapi.com/?t=${title}&apikey=cdf0e59b`)
+        .then((response) => response.json())
+        .then((data) => {
+          const titleElement = document.querySelector(".title");
+          const releasedElement = document.querySelector(".released");
+          const genreElement = document.querySelector(".genre");
+          const plotElement = document.querySelector(".plot");
+          const languageElement = document.querySelector(".language");
+          const posterElement = document.querySelector(".poster");
+          const imdbRatingElement = document.querySelector(".fa-solid");
+          const Actors = document.querySelector(".Actors");
+
+          titleElement.textContent = `'' ${data.Title} ''`;
+          releasedElement.textContent = data.Released;
+          genreElement.textContent = data.Genre;
+          plotElement.textContent = data.Plot;
+          languageElement.textContent = data.Language;
+          imdbRatingElement.textContent = ` ${data.imdbRating}`;
+          Actors.textContent = data.Actors
+          posterElement.src = data.Poster;
+        })
+        .catch((error) => {
+          console.log("Error occurred:", error);
+        });
+    }
+
+    movieTitleInput.addEventListener("keyup", (event) => {
+      if (event.key === "Enter") {
+        fetchMovieDetails();
+      }
+    });
+
+    fetchButton.addEventListener("click", fetchMovieDetails);
+  </script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+
+</html>
